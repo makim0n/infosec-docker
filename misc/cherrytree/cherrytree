@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# cherrytree folder 
+CHERRY_FOLDER=$HOME/.cherrytree
+mkdir -p $CHERRY_FOLDER
+
+# Getting IP address for xhost. Check for a better way ? 
+IP=$(ifconfig | grep 'inet[[:space:]]' | grep -v '127.0.0.1' | cut -d' ' -f2 | head -n 1)
+xhost $IP
+
+docker run --rm --name cherrytree -e DISPLAY=$IP:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v $CHERRY_FOLDER:/home/cherry makimon/cherrytree
